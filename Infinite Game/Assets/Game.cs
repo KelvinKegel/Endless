@@ -7,7 +7,7 @@ public class Game : MonoBehaviour
 {
     void Start()
     {
-        
+
     }
 
     private void Awake()
@@ -19,9 +19,8 @@ public class Game : MonoBehaviour
         //sua bunda() = comi o cu de quem ta lendo
     }
 
-    public void loadGameScene()
-    {
-        print("ansdhbdvsf");
-        SceneManager.LoadScene("Game");
-    }
+
+    
+
+
 }
