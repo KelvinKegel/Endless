@@ -20,7 +20,6 @@ public class Menu : MonoBehaviour
 
     public void loadGameScene()
     {
-        print("ansdhbdvsf");
         SceneManager.LoadScene("Game");
     }
 
