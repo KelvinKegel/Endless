@@ -13,6 +13,8 @@ public class Player : MonoBehaviour
     [SerializeField]
     GameObject mesh;
 
+    bool isGrounded;
+
     void Start()
     {
         
@@ -30,6 +32,7 @@ public class Player : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.S))
         {
             rasteirinhaPerigosa();
+            StartCoroutine(CooldownRasteira());
         }
 
         mesh.transform.position = transform.position;
@@ -57,18 +60,44 @@ public class Player : MonoBehaviour
         transform.parent.Translate(direction * velocity);
     }
 
+    private void OnCollisionEnter(Collision collision)
+    {
+        if ((collision.transform.CompareTag("Ground")) == true)
+        {
+            isGrounded = true;
+        }
+
+    }
+
+    private void OnCollisionExit(Collision collision)
+    {
+        if ((collision.transform.CompareTag("Ground")) == true)
+        {
+            isGrounded = false;
+        }
+    }
+
     void teleport()
     {
-        if(Collision.gameObject.CompareTag("Ground"))
+        if(isGrounded)
         {
             transform.parent.Translate(0, 10, 0);
         }
         
     }
 
+    IEnumerator CooldownRasteira()
+    {
+        yield return new WaitForSeconds(1.5f);
+        mesh.transform.localEulerAngles = new Vector3(0, 0, 0);
+        GetComponent<BoxCollider>().size = Vector3.one ;
+    }
+
     void rasteirinhaPerigosa()
     {
         mesh.transform.localEulerAngles = new Vector3(0, 0, 60);
-
+        BoxCollider box = GetComponent<BoxCollider>();
+        Vector3 resize = new Vector3(box.size.x, box.size.y / 2, box.size.z);
+        GetComponent<BoxCollider>().size = resize;
     }
 }
