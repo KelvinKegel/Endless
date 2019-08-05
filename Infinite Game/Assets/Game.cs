@@ -2,11 +2,15 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using System.Linq;
 
 public class Game : MonoBehaviour
 {
+    float xPos;
+    float yPos;
+
     [SerializeField]
-    private GameObject[] prefabsCoinSpawn = new GameObject[0];
+    private GameObject[] prefabsCoinSpawn = new GameObject[2];
 
     [SerializeField]
     private GameObject[] prefabsPlataform;
@@ -22,10 +26,15 @@ public class Game : MonoBehaviour
     [SerializeField]
     Material[] materials;
 
+    [SerializeField]
     Player playerRef;
 
     [SerializeField]
-    float distanceRespawn = 10;
+    float distanceRespawn = 20;
+
+    float timerStartCoin;
+    [SerializeField]
+    float timerMaxCoin;
 
     void Start()
     {
@@ -36,19 +45,24 @@ public class Game : MonoBehaviour
 
         for (int i = 0; i < maxPool; i++)
         {
-            spawnPlataform();
+            spawnPlataform(Random.Range(20,30), Random.Range(14,20));
         }
     }
-
+    
     private void Awake()
     {
         DontDestroyOnLoad(gameObject);
     }
     void Update()
     {
+        if (Time.time >= timerStartCoin + timerMaxCoin)
+        {
+            timerStartCoin = Time.time;
+            coinSpawn();
+        }
         if (checkRespawn())
         {
-            respawnPlataform();
+            respawnPlataform(Random.Range(20, 30), Random.Range(14, 25));
         }
     }
 
@@ -68,20 +82,29 @@ public class Game : MonoBehaviour
     {
         int coinQuantity = 0;
 
-        for (int i = 0; i < 3; i++)
+        for (int i = 0; i < 2; i++)
         {
+            int plataformaSelec = Random.Range(4, fila.Count);
 
+            xPos = Random.Range(0, 6);
+
+            yPos = Random.Range(0f, 5f) + fila.ElementAt(plataformaSelec).transform.localScale.y /2f ;
+
+            Instantiate(prefabsCoinSpawn[Random.Range(0, prefabsCoinSpawn.Length)], new Vector3((fila.ElementAt(plataformaSelec).transform.position.x + xPos), (fila.ElementAt(plataformaSelec).transform.position.y + yPos), 0), Quaternion.identity);
+            coinQuantity += 1;
         }
 
     }
 
-    public void respawnPlataform()
+    public void respawnPlataform(float scaleX, float scaleY)
     {
+
         GameObject plataforma = fila.Dequeue();
-        Vector3 newscale = new Vector3(Random.Range(20f, 50f), Random.Range(10f, 15f), 5);
+        float posY = Random.Range(-10, playerRef.getjumpHeight() - scaleY );
+        Vector3 newscale = new Vector3(scaleX, scaleY, 5);
         plataforma.transform.localScale = newscale;
         Vector3 newPosition = nextPosition;
-        newPosition.y += Random.Range(-10, 10);
+        newPosition.y += posY;
         newPosition.x += plataforma.transform.localScale.x / 2;
         plataforma.transform.position = newPosition;
         nextPosition.x += plataforma.transform.localScale.x;
@@ -91,11 +114,11 @@ public class Game : MonoBehaviour
         fila.Enqueue(plataforma);
     }
 
-    public void spawnPlataform()
+    public void spawnPlataform(float scaleX, float scaleY)
     {
         if (fila.Count >= maxPool) return;
         GameObject plataforma = Instantiate(prefabsPlataform[0], nextPosition, Quaternion.identity);
-        Vector3 newscale = new Vector3(Random.Range(20f, 50f), Random.Range(10f, 15f), 5);
+        Vector3 newscale = new Vector3(scaleX, scaleY, 5);
         plataforma.transform.localScale = newscale;
         Vector3 newPosition = nextPosition;
         newPosition.y += Random.Range(-10, 10);

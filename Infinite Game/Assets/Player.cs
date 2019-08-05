@@ -12,6 +12,7 @@ public class Player : MonoBehaviour
     float velocity;
     [SerializeField]
     GameObject mesh;
+    float jumpHeight = 13f;
 
     bool isGrounded;
 
@@ -81,9 +82,14 @@ public class Player : MonoBehaviour
     {
         if(isGrounded)
         {
-            transform.parent.Translate(0, 10, 0);
+            transform.parent.Translate(0, jumpHeight, 0);
         }
         
+    }
+
+    public float getjumpHeight()
+    {
+        return jumpHeight;
     }
 
     IEnumerator CooldownRasteira()
