@@ -5,6 +5,9 @@ using UnityEngine;
 public class Player : MonoBehaviour
 {
     [SerializeField]
+    Game game_ref;
+
+    [SerializeField]
     float speed = 10f;
     [SerializeField]
     Vector3 direction;
@@ -105,5 +108,18 @@ public class Player : MonoBehaviour
         BoxCollider box = GetComponent<BoxCollider>();
         Vector3 resize = new Vector3(box.size.x, box.size.y / 2, box.size.z);
         GetComponent<BoxCollider>().size = resize;
+    }
+
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.transform.CompareTag("Coin"))
+        {
+            //chamamos função do game para atualizar a lista de coins
+            //game_ref.RemoveCoinFromList(other.gameObject);
+
+            GameObject.Destroy(other.gameObject);
+            game_ref.coinCount++;
+            game_ref.textoMoedas.text = "Coins: " + game_ref.coinCount;
+        }
     }
 }

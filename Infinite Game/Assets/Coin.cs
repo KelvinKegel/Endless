@@ -5,17 +5,19 @@ using UnityEngine;
 public class Coin : MonoBehaviour
 {
     public GameObject platformRef;
+    float rotationSpeed = 180;
 
     // Start is called before the first frame update
     void Start()
     {
-        
+        Vector3 to = new Vector3(90, 0, 0);
+        transform.eulerAngles = to;
     }
 
     // Update is called once per frame
     void Update()
     {
-        
+        transform.Rotate(Vector3.up * Time.deltaTime * rotationSpeed, Space.World);
     }
 
     private void OnCollisionEnter(Collision collision)

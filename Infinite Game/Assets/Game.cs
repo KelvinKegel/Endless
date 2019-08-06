@@ -3,11 +3,16 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using System.Linq;
+using TMPro;
 
 public class Game : MonoBehaviour
 {
     float xPos;
     float yPos;
+
+    public int coinCount = 0;
+
+    public TextMeshProUGUI textoMoedas;
 
     [SerializeField]
     private GameObject[] prefabsCoinSpawn = new GameObject[2];
@@ -38,7 +43,8 @@ public class Game : MonoBehaviour
 
     void Start()
     {
-        if(!playerRef || playerRef == null)
+
+        if (!playerRef || playerRef == null)
         {
             playerRef = GameObject.FindGameObjectWithTag("Player").GetComponent<Player>();
         }
@@ -55,6 +61,8 @@ public class Game : MonoBehaviour
     }
     void Update()
     {
+        textoMoedas.text = "Coins: " + coinCount;
+
         if (Time.time >= timerStartCoin + timerMaxCoin)
         {
             timerStartCoin = Time.time;
@@ -88,7 +96,7 @@ public class Game : MonoBehaviour
 
             xPos = Random.Range(0, 6);
 
-            yPos = Random.Range(0f, 5f) + fila.ElementAt(plataformaSelec).transform.localScale.y /2f ;
+            yPos = Random.Range(1f, 5f) + fila.ElementAt(plataformaSelec).transform.localScale.y /2f ;
 
             Instantiate(prefabsCoinSpawn[Random.Range(0, prefabsCoinSpawn.Length)], new Vector3((fila.ElementAt(plataformaSelec).transform.position.x + xPos), (fila.ElementAt(plataformaSelec).transform.position.y + yPos), 0), Quaternion.identity);
             coinQuantity += 1;
@@ -130,5 +138,7 @@ public class Game : MonoBehaviour
 
         fila.Enqueue(plataforma);
     }
+
+
 
 }
