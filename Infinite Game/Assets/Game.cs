@@ -11,8 +11,10 @@ public class Game : MonoBehaviour
     float yPos;
 
     public int coinCount = 0;
+    public int HPCount = 5;
 
     public TextMeshProUGUI textoMoedas;
+    public TextMeshProUGUI textoHP;
 
     [SerializeField]
     private GameObject[] prefabsCoinSpawn = new GameObject[2];
@@ -62,6 +64,7 @@ public class Game : MonoBehaviour
     void Update()
     {
         textoMoedas.text = "Coins: " + coinCount;
+        textoHP.text = "Hp: " + HPCount;
 
         if (Time.time >= timerStartCoin + timerMaxCoin)
         {
