@@ -11,13 +11,16 @@ public class Game : MonoBehaviour
     float yPos;
 
     public int coinCount = 0;
-    public int HPCount = 5;
+    //public int HPCount = 5;
 
     public TextMeshProUGUI textoMoedas;
-    public TextMeshProUGUI textoHP;
+    //public TextMeshProUGUI textoHP;
 
     [SerializeField]
     private GameObject[] prefabsCoinSpawn = new GameObject[2];
+
+    [SerializeField]
+    private GameObject[] prefabsSpikeSpawn = new GameObject[2];
 
     [SerializeField]
     private GameObject[] prefabsPlataform;
@@ -64,12 +67,14 @@ public class Game : MonoBehaviour
     void Update()
     {
         textoMoedas.text = "Coins: " + coinCount;
-        textoHP.text = "Hp: " + HPCount;
+        //textoHP.text = "Hp: " + HPCount;
 
         if (Time.time >= timerStartCoin + timerMaxCoin)
         {
             timerStartCoin = Time.time;
-            coinSpawn();
+            //spikeSpawn(1);
+            coinSpawn(2, spikeSpawn(1));
+
         }
         if (checkRespawn())
         {
@@ -89,30 +94,14 @@ public class Game : MonoBehaviour
         }
     }
 
-    public void coinSpawn()
-    {
-        int coinQuantity = 0;
 
-        for (int i = 0; i < 2; i++)
-        {
-            int plataformaSelec = Random.Range(4, fila.Count);
-
-            xPos = Random.Range(0, 6);
-
-            yPos = Random.Range(1f, 5f) + fila.ElementAt(plataformaSelec).transform.localScale.y /2f ;
-
-            Instantiate(prefabsCoinSpawn[Random.Range(0, prefabsCoinSpawn.Length)], new Vector3((fila.ElementAt(plataformaSelec).transform.position.x + xPos), (fila.ElementAt(plataformaSelec).transform.position.y + yPos), 0), Quaternion.identity);
-            coinQuantity += 1;
-        }
-
-    }
 
     public void respawnPlataform(float scaleX, float scaleY)
     {
 
         GameObject plataforma = fila.Dequeue();
         float posY = Random.Range(-10, playerRef.getjumpHeight() - scaleY );
-        Vector3 newscale = new Vector3(scaleX, scaleY, 5);
+        Vector3 newscale = new Vector3(scaleX +5, scaleY, 5);
         plataforma.transform.localScale = newscale;
         Vector3 newPosition = nextPosition;
         newPosition.y += posY;
@@ -142,6 +131,42 @@ public class Game : MonoBehaviour
         fila.Enqueue(plataforma);
     }
 
+    public GameObject spikeSpawn(int quantidade)
+    {
+        GameObject g = new GameObject();   
+        for(int i = 0; i < quantidade; i++)
+        {
+            int plataformaSelec = Random.Range(4, fila.Count);
 
+            xPos = 0;
 
+            yPos = 4 + fila.ElementAt(plataformaSelec).transform.localScale.y / 2f;
+
+            g = Instantiate(prefabsSpikeSpawn[Random.Range(0, prefabsSpikeSpawn.Length)], 
+                new Vector3((fila.ElementAt(plataformaSelec).transform.position.x + xPos), 
+                (fila.ElementAt(plataformaSelec).transform.position.y + yPos), 0), Quaternion.identity);
+        }
+        return g;
+
+    }
+
+    public void coinSpawn(int quantidade, GameObject reference)
+    {
+        //int coinQuantity = 0;
+
+        for (int i = 0; i < quantidade; i++)
+        {
+            int plataformaSelec = Random.Range(4, fila.Count);
+
+            xPos = Random.Range(-3, 6) + reference.transform.localScale.x / 1f;
+
+            yPos = Random.Range(1f, 5f) + reference.transform.localScale.y /1f;
+
+            Instantiate(prefabsCoinSpawn[Random.Range(0, prefabsCoinSpawn.Length)],
+                new Vector3((reference.transform.position.x + xPos),
+                (reference.transform.position.y + yPos), playerRef.transform.position.z), Quaternion.identity);
+            //coinQuantity += 1;
+        }
+
+    }
 }

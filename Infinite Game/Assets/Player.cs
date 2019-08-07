@@ -8,16 +8,22 @@ public class Player : MonoBehaviour
     Game game_ref;
 
     [SerializeField]
-    float speed = 10f;
+    float downSpeed;
+    [SerializeField]
+    float speed = 15f;
     [SerializeField]
     Vector3 direction;
     [SerializeField]
     float velocity;
     [SerializeField]
     GameObject mesh;
-    float jumpHeight = 13f;
+    float jumpHeight = 15f;
 
+    [SerializeField]
     bool isGrounded;
+
+    [SerializeField]
+    bool isDead = false;
 
     void Start()
     {
@@ -26,22 +32,24 @@ public class Player : MonoBehaviour
 
     void Update()
     {
-        running();
-
-        if (Input.GetKeyDown(KeyCode.W))
+        if (!isDead)
         {
-            teleport();
-        }
+            running();
 
-        if (Input.GetKeyDown(KeyCode.S))
-        {
-            rasteirinhaPerigosa();
-            StartCoroutine(CooldownRasteira());
-        }
+#if UNITY_EDITOR
+            if (Input.GetKeyDown(KeyCode.W))
+            {
+                teleport();
+            }
 
-        mesh.transform.position = transform.position;
+            if (Input.GetKeyDown(KeyCode.S))
+            {
+                rasteirinhaPerigosa();
+                StartCoroutine(CooldownRasteira());
+            }
+#endif
 
-/*         {
+#if UNITY_ANDROID
             // If there are two touches on the device...
             if (Input.touchCount == 2)
             {
@@ -53,8 +61,11 @@ public class Player : MonoBehaviour
                 Vector2 touchZeroPrevPos = touchZero.position - touchZero.deltaPosition;
                 Vector2 touchOnePrevPos = touchOne.position - touchOne.deltaPosition;
             }
+#endif
         }
-*/
+
+        mesh.transform.position = transform.position;
+         
     }
 
     void running()
@@ -70,7 +81,10 @@ public class Player : MonoBehaviour
         {
             isGrounded = true;
         }
-
+        if (collision.transform.CompareTag("SpikePoint"))
+        {
+            isDead = true;
+        }
     }
 
     private void OnCollisionExit(Collision collision)
@@ -104,6 +118,11 @@ public class Player : MonoBehaviour
 
     void rasteirinhaPerigosa()
     {
+        if(isGrounded == false)
+        {
+            // GetComponent<Rigidbody>().AddForce(Vector3.down * downSpeed);
+            GetComponent<Rigidbody>().velocity += Vector3.down * downSpeed;
+        }
         mesh.transform.localEulerAngles = new Vector3(0, 0, 60);
         BoxCollider box = GetComponent<BoxCollider>();
         Vector3 resize = new Vector3(box.size.x, box.size.y / 2, box.size.z);
@@ -114,12 +133,21 @@ public class Player : MonoBehaviour
     {
         if (other.transform.CompareTag("Coin"))
         {
-            //chamamos função do game para atualizar a lista de coins
-            //game_ref.RemoveCoinFromList(other.gameObject);
-
             GameObject.Destroy(other.gameObject);
             game_ref.coinCount++;
             game_ref.textoMoedas.text = "Coins: " + game_ref.coinCount;
+        }
+        if (other.transform.CompareTag("Ground"))
+        {
+            isGrounded = true;
+        }
+    }
+
+    private void OnTriggerExit(Collider other)
+    {
+        if (other.transform.CompareTag("Ground"))
+        {
+            isGrounded = false;
         }
     }
 }

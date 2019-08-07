@@ -6,6 +6,9 @@ TagManager:
   tags:
   - Ground
   - Coin
+  - Spike
+  - ColiderCoinSpike
+  - SpikePoint
   layers:
   - Default
   - TransparentFX

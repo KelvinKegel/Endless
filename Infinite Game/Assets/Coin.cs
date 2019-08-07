@@ -12,6 +12,7 @@ public class Coin : MonoBehaviour
     {
         Vector3 to = new Vector3(90, 0, 0);
         transform.eulerAngles = to;
+        Destroy(gameObject, 15);
     }
 
     // Update is called once per frame
@@ -28,5 +29,11 @@ public class Coin : MonoBehaviour
         }
     }
 
-
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.transform.CompareTag("ColiderCoinSpike"))
+        {
+            Destroy(gameObject);
+        }
+    }
 }
