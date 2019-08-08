@@ -22,8 +22,6 @@ ScriptsOnlyBuild:
     - TMPro.TMP_SpriteAsset
     - TMPro.TMP_StyleSheet
     - TMPro.TextMeshProUGUI
-    UnityEditor.TestRunner.dll:
-    - UnityEditor.TestTools.TestRunner.TestListCacheData
     UnityEngine.UI.dll:
     - UnityEngine.EventSystems.EventSystem
     - UnityEngine.EventSystems.StandaloneInputModule
@@ -64,39 +62,39 @@ ScriptsOnlyBuild:
     - Class: 108
       Script: {instanceID: 0}
     - Class: 114
-      Script: {instanceID: 9502}
-    - Class: 114
       Script: {instanceID: 9504}
     - Class: 114
-      Script: {instanceID: 9510}
+      Script: {instanceID: 9506}
     - Class: 114
-      Script: {instanceID: 9516}
+      Script: {instanceID: 9512}
     - Class: 114
-      Script: {instanceID: 9524}
+      Script: {instanceID: 9518}
     - Class: 114
-      Script: {instanceID: 9560}
+      Script: {instanceID: 9526}
     - Class: 114
-      Script: {instanceID: 9824}
+      Script: {instanceID: 9562}
     - Class: 114
-      Script: {instanceID: 10116}
+      Script: {instanceID: 9826}
     - Class: 114
-      Script: {instanceID: 10258}
+      Script: {instanceID: 10118}
     - Class: 114
-      Script: {instanceID: 10404}
+      Script: {instanceID: 10260}
     - Class: 114
-      Script: {instanceID: 10728}
+      Script: {instanceID: 10406}
     - Class: 114
-      Script: {instanceID: 10780}
+      Script: {instanceID: 10730}
     - Class: 114
-      Script: {instanceID: 10822}
+      Script: {instanceID: 10782}
     - Class: 114
-      Script: {instanceID: 10984}
+      Script: {instanceID: 10824}
     - Class: 114
-      Script: {instanceID: 11180}
+      Script: {instanceID: 10986}
     - Class: 114
-      Script: {instanceID: 11226}
+      Script: {instanceID: 11182}
     - Class: 114
-      Script: {instanceID: 11502}
+      Script: {instanceID: 11228}
+    - Class: 114
+      Script: {instanceID: 11504}
     - Class: 115
       Script: {instanceID: 0}
     - Class: 128
@@ -141,29 +139,29 @@ ScriptsOnlyBuild:
     - Class: 109
       Script: {instanceID: 0}
     - Class: 114
-      Script: {instanceID: 9502}
-    - Class: 114
       Script: {instanceID: 9504}
     - Class: 114
-      Script: {instanceID: 9510}
+      Script: {instanceID: 9506}
     - Class: 114
-      Script: {instanceID: 9516}
+      Script: {instanceID: 9512}
     - Class: 114
-      Script: {instanceID: 9524}
+      Script: {instanceID: 9518}
     - Class: 114
-      Script: {instanceID: 9560}
+      Script: {instanceID: 9526}
     - Class: 114
-      Script: {instanceID: 10100}
+      Script: {instanceID: 9562}
     - Class: 114
-      Script: {instanceID: 10728}
+      Script: {instanceID: 10102}
     - Class: 114
-      Script: {instanceID: 10744}
+      Script: {instanceID: 10730}
     - Class: 114
-      Script: {instanceID: 10910}
+      Script: {instanceID: 10746}
     - Class: 114
-      Script: {instanceID: 10984}
+      Script: {instanceID: 10912}
     - Class: 114
-      Script: {instanceID: 11326}
+      Script: {instanceID: 10986}
+    - Class: 114
+      Script: {instanceID: 11328}
     - Class: 115
       Script: {instanceID: 0}
     - Class: 128
@@ -1127,4 +1125,4 @@ ScriptsOnlyBuild:
   scenePathNames:
   - Assets/Scenes/Menu.unity
   - Assets/Scenes/Game.unity
-  playerPath: C:/Users/Kelvin/Documents/GitHub/Endless/Infinite Game/Infinite Game.apk
+  playerPath: C:/Users/Kelvin/Desktop/Infinite Game.apk
