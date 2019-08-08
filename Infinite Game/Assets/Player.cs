@@ -1,36 +1,39 @@
 ﻿using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class Player : MonoBehaviour
 {
     [SerializeField]
-    Game game_ref;
+    private Game game_ref;
 
     [SerializeField]
-    float downSpeed;
-    [SerializeField]
-    float speed = 15f;
-    [SerializeField]
-    Vector3 direction;
-    [SerializeField]
-    float velocity;
-    [SerializeField]
-    GameObject mesh;
-    float jumpHeight = 15f;
+    private float downSpeed;
 
     [SerializeField]
-    bool isGrounded;
+    private float speed = 15f;
 
     [SerializeField]
-    bool isDead = false;
+    private Vector3 direction;
 
-    void Start()
+    [SerializeField]
+    private float velocity;
+
+    [SerializeField]
+    private GameObject mesh;
+
+    private float jumpHeight = 15f;
+
+    [SerializeField]
+    private bool isGrounded;
+
+    [SerializeField]
+    private bool isDead = false;
+
+    private void Start()
     {
-        
     }
 
-    void Update()
+    private void Update()
     {
         if (!isDead)
         {
@@ -51,24 +54,29 @@ public class Player : MonoBehaviour
 
 #if UNITY_ANDROID
             // If there are two touches on the device...
-            if (Input.touchCount == 2)
+            if (Input.touches.Length == 1) //se tem apenas um toque na tela
             {
-                // Store both touches.
-                Touch touchZero = Input.GetTouch(0);
-                Touch touchOne = Input.GetTouch(1);
+                if (Input.touches[0].phase == TouchPhase.Began) //se recém tocou na tela e não moveu
+                    {
 
-                // Find the position in the previous frame of each touch.
-                Vector2 touchZeroPrevPos = touchZero.position - touchZero.deltaPosition;
-                Vector2 touchOnePrevPos = touchOne.position - touchOne.deltaPosition;
+                    if (Input.touches[0].position.x > Screen.width / 2) // se a posição no x for maior que a metade da tela
+                    {
+                        teleport();
+                    }
+                    else
+                    {
+                        rasteirinhaPerigosa();
+                        StartCoroutine(CooldownRasteira());
+                    }
+                }
             }
 #endif
         }
 
         mesh.transform.position = transform.position;
-         
     }
 
-    void running()
+    private void running()
     {
         direction = Vector3.right;
         velocity = speed * Time.deltaTime;
@@ -84,6 +92,7 @@ public class Player : MonoBehaviour
         if (collision.transform.CompareTag("SpikePoint"))
         {
             isDead = true;
+            game_ref.gameOver();
         }
     }
 
@@ -95,13 +104,12 @@ public class Player : MonoBehaviour
         }
     }
 
-    void teleport()
+    private void teleport()
     {
-        if(isGrounded)
+        if (isGrounded)
         {
             transform.parent.Translate(0, jumpHeight, 0);
         }
-        
     }
 
     public float getjumpHeight()
@@ -109,16 +117,16 @@ public class Player : MonoBehaviour
         return jumpHeight;
     }
 
-    IEnumerator CooldownRasteira()
+    private IEnumerator CooldownRasteira()
     {
         yield return new WaitForSeconds(1.5f);
         mesh.transform.localEulerAngles = new Vector3(0, 0, 0);
-        GetComponent<BoxCollider>().size = Vector3.one ;
+        GetComponent<BoxCollider>().size = Vector3.one;
     }
 
-    void rasteirinhaPerigosa()
+    private void rasteirinhaPerigosa()
     {
-        if(isGrounded == false)
+        if (isGrounded == false)
         {
             // GetComponent<Rigidbody>().AddForce(Vector3.down * downSpeed);
             GetComponent<Rigidbody>().velocity += Vector3.down * downSpeed;
